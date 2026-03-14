@@ -4,12 +4,12 @@ set -euo pipefail
 # ============================================================================
 # nix-darwin Bootstrap Script
 # Run on a fresh macOS machine:
-#   curl -fsSL https://raw.githubusercontent.com/acannizzaro/nix-darwin/main/bootstrap.sh -o /tmp/bootstrap.sh
+#   curl -fsSL https://raw.githubusercontent.com/acannizzaro/nix-config/main/bootstrap.sh -o /tmp/bootstrap.sh
 #   chmod +x /tmp/bootstrap.sh
 #   /tmp/bootstrap.sh
 # ============================================================================
 
-REPO_URL="https://github.com/acannizzaro/nix-darwin.git"
+REPO_URL="https://github.com/acannizzaro/nix-config.git"
 FLAKE_DIR="$HOME/.config/nix-darwin"
 
 RED='\033[0;31m'
@@ -289,7 +289,7 @@ ok "nix-darwin activated"
 
 echo ""
 info "Switching git remote to SSH..."
-git remote set-url origin git@github.com:acannizzaro/nix-darwin.git
+git remote set-url origin git@github.com:acannizzaro/nix-config.git
 ok "Remote switched to SSH (requires 1Password SSH agent — see manual steps)"
 
 # ============================================================================

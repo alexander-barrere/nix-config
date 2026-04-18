@@ -41,7 +41,7 @@
               nix-homebrew, homebrew-core, homebrew-cask,
               agenix, fenix, ... }:
   let
-    user = "dn5v";
+    user = "thor";
 
     mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [] }:
       nix-darwin.lib.darwinSystem {
@@ -90,7 +90,7 @@
   in
   {
     darwinConfigurations = {
-      personal-mbp = mkDarwinSystem { hostname = "personal-mbp"; };
+      tanngrisnir = mkDarwinSystem { hostname = "tanngrisnir"; };
 
       # Uncomment when you set up your work machine
       # work-mbp = mkDarwinSystem { hostname = "work-mbp"; };

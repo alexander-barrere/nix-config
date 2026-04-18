@@ -2,23 +2,24 @@
 
 let
   emailMap = {
-    "personal-mbp" = "67709553+acannizzaro@users.noreply.github.com";
-    "work-mbp" = "anthony@company.com";
+    "personal-mbp" = "alexander-barrere@users.noreply.github.com";
+    "work-mbp" = "alexander-barrere@users.noreply.github.com";
   };
 in
 {
   programs.git = {
     enable = true;
 
-    signing = {
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJpg4z09PYNHg3nyO1cOG5DNLmkhp3ZqIwk6kZGbqnq";
-      signByDefault = true;
-    };
+    # SSH signing disabled - add your own key later
+    # signing = {
+    #   key = "ssh-ed25519 YOUR_SSH_KEY_HERE";
+    #   signByDefault = true;
+    # };
 
     settings = {
       user = {
-        name = "acannizzaro";
-        email = emailMap.${hostname} or "67709553+acannizzaro@users.noreply.github.com";
+        name = "Alexander Barrere";
+        email = emailMap.${hostname} or "alexander-barrere@users.noreply.github.com";
       };
       gpg.format = "ssh";
       "gpg.ssh".allowedSignersFile = "~/.config/git/allowed_signers";
@@ -38,9 +39,10 @@ in
     ];
   };
 
-  xdg.configFile."git/allowed_signers".text = ''
-    67709553+acannizzaro@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJpg4z09PYNHg3nyO1cOG5DNLmkhp3ZqIwk6kZGbqnq
-  '';
+  # SSH signing disabled - add your own key later
+  # xdg.configFile."git/allowed_signers".text = ''
+  #   alexander-barrere@users.noreply.github.com ssh-ed25519 YOUR_SSH_KEY_HERE
+  # '';
 
   programs.delta = {
     enable = true;

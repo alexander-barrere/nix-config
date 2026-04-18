@@ -12,18 +12,18 @@ prompt: enabled
 pager: delta
 CFGEOF
 
-    # Write auth from agenix secret
-    if [ -f /run/agenix/github-token ]; then
-      TOKEN=$(cat /run/agenix/github-token)
-      (
-        umask 077
-        cat > ~/.config/gh/hosts.yml << EOF
-github.com:
-    oauth_token: $TOKEN
-    user: acannizzaro
-    git_protocol: ssh
-EOF
-      )
-    fi
+    # GitHub token disabled - set up manually with: gh auth login
+    # if [ -f /run/agenix/github-token ]; then
+    #   TOKEN=$(cat /run/agenix/github-token)
+    #   (
+    #     umask 077
+    #     cat > ~/.config/gh/hosts.yml << EOF
+    # github.com:
+    #     oauth_token: $TOKEN
+    #     user: alexander-barrere
+    #     git_protocol: ssh
+    # EOF
+    #   )
+    # fi
   '';
 }

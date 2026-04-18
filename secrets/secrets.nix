@@ -1,10 +1,12 @@
 let
   # Public keys for agenix encryption
-  recovery = "age1lpqyxpqrppau02t9rl3f6rh5ar7w3a2wwnwrftyv7vjed6qjudfqryl2cx";
-  acannizzaro = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJpg4z09PYNHg3nyO1cOG5DNLmkhp3ZqIwk6kZGbqnq";
-  personal-mbp = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBGg6PfRyqK97CQ9IVn0nmVpOwadkigHSKQ1ml3KkNeT";
+  # Add your recovery age key and SSH keys here when setting up secrets
+  # recovery = "age1...your-recovery-key...";
+  # alexander-barrere = "ssh-ed25519 ...your-ssh-key...";
+  # your-hostname = "ssh-ed25519 ...host-ssh-key...";
 in
 {
-  "github-token.age".publicKeys = [ recovery acannizzaro personal-mbp ];
-  "env-secrets.age".publicKeys = [ recovery acannizzaro personal-mbp ];
+  # Uncomment and update when you set up secrets
+  # "github-token.age".publicKeys = [ recovery alexander-barrere your-hostname ];
+  # "env-secrets.age".publicKeys = [ recovery alexander-barrere your-hostname ];
 }

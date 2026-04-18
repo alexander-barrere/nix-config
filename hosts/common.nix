@@ -26,15 +26,16 @@
 
   system.primaryUser = user;
 
-  age.secrets.github-token = {
-    file = ../secrets/github-token.age;
-    owner = user;
-  };
+  # Secrets disabled - set up agenix later if needed
+  # age.secrets.github-token = {
+  #   file = ../secrets/github-token.age;
+  #   owner = user;
+  # };
 
-  age.secrets.env-secrets = {
-    file = ../secrets/env-secrets.age;
-    owner = user;
-  };
+  # age.secrets.env-secrets = {
+  #   file = ../secrets/env-secrets.age;
+  #   owner = user;
+  # };
 
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;

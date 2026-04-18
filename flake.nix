@@ -1,5 +1,5 @@
 {
-  description = "Anthony's macOS system config";
+  description = "Alexander's macOS system config";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -41,7 +41,7 @@
               nix-homebrew, homebrew-core, homebrew-cask,
               agenix, fenix, ... }:
   let
-    user = "ajc3";
+    user = "dn5v";
 
     mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [] }:
       nix-darwin.lib.darwinSystem {

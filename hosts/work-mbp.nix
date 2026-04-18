@@ -3,7 +3,7 @@
 
 {
   networking.hostName = "work-mbp";
-  networking.computerName = "Anthony-Work";
+  networking.computerName = "Alexander-Work";
 
   # Work-only Homebrew casks
   homebrew.casks = [

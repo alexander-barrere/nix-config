@@ -67,7 +67,7 @@ nix-gc           # nix-collect-garbage --delete-older-than 30d
 ### Fresh Machine
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/acannizzaro/nix-config/main/bootstrap.sh -o /tmp/bootstrap.sh
+curl -fsSL https://raw.githubusercontent.com/alexander-barrere/nix-config/main/bootstrap.sh -o /tmp/bootstrap.sh
 chmod +x /tmp/bootstrap.sh
 /tmp/bootstrap.sh
 ```

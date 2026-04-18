@@ -195,75 +195,12 @@ sudo scutil --set LocalHostName "$HOSTNAME"
 ok "Hostname set"
 
 # ============================================================================
-# Step 8: Bootstrap agenix secrets
+# Step 8: Agenix secrets (skipped — not configured)
 # ============================================================================
 
 echo ""
-info "Setting up agenix secrets for this machine..."
-
-# Get this machine's host SSH public key
-if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
-  error "Host SSH key not found at /etc/ssh/ssh_host_ed25519_key"
-fi
-HOST_KEY=$(ssh-keygen -y -f /etc/ssh/ssh_host_ed25519_key)
-ok "Host SSH public key: ${HOST_KEY:0:40}..."
-
-# Update or add hostname in secrets.nix
-if grep -q "^  ${HOSTNAME} = " secrets/secrets.nix; then
-  info "Hostname '$HOSTNAME' already in secrets.nix — updating host key..."
-  sed -i "" "s|  ${HOSTNAME} = \".*\";|  ${HOSTNAME} = \"${HOST_KEY}\";|" secrets/secrets.nix
-  ok "Updated host key for $HOSTNAME"
-else
-  info "Adding new hostname '$HOSTNAME' to secrets.nix..."
-
-  # Add new host variable before 'in' line
-  awk -v host="$HOSTNAME" -v key="$HOST_KEY" '
-    /^in$/ { print "  " host " = \"" key "\";" }
-    { print }
-  ' secrets/secrets.nix > secrets/secrets.nix.tmp && mv secrets/secrets.nix.tmp secrets/secrets.nix
-
-  # Add hostname to all publicKeys lists
-  sed -i "" "s/ \];/ ${HOSTNAME} \];/g" secrets/secrets.nix
-
-  ok "Added $HOSTNAME to secrets.nix"
-fi
-
-echo ""
-info "Updated secrets/secrets.nix:"
-cat secrets/secrets.nix
-echo ""
-
-# Re-encrypt secrets with updated key set
-info "To re-encrypt secrets, paste your age recovery private key."
-info "Find it in 1Password: op://Private/agenix-key/password"
-info "(Open 1Password on your phone or at https://my.1password.com)"
-echo ""
-
-TMPKEY=$(mktemp)
-chmod 600 "$TMPKEY"
-trap 'rm -f "$TMPKEY"' EXIT
-
-read -rsp "Paste the age recovery key (starts with AGE-SECRET-KEY-), then press Enter: " AGE_KEY
-echo ""
-
-if [[ ! "$AGE_KEY" =~ ^AGE-SECRET-KEY- ]]; then
-  rm -f "$TMPKEY"
-  error "Invalid key format — must start with AGE-SECRET-KEY-"
-fi
-
-echo "$AGE_KEY" > "$TMPKEY"
-
-info "Re-encrypting secrets..."
-cd secrets
-if nix run github:ryantm/agenix -- -r -i "$TMPKEY"; then
-  ok "Secrets re-encrypted successfully"
-else
-  rm -f "$TMPKEY"
-  error "Re-encryption failed — check that the recovery key is correct"
-fi
-cd "$FLAKE_DIR"
-
-rm -f "$TMPKEY"
+info "Skipping agenix secrets setup (not configured)"
+info "To set up secrets later, see: https://github.com/ryantm/agenix"
 
 # ============================================================================
 # Step 9: First-time nix-darwin build and activation
@@ -289,25 +226,15 @@ ok "nix-darwin activated"
 
 echo ""
 info "Switching git remote to SSH..."
-git remote set-url origin git@github.com:alexander-barrere/nix-config.git
-ok "Remote switched to SSH (requires 1Password SSH agent — see manual steps)"
+git remote set-url origin git@github-personal:alexander-barrere/nix-config.git
+ok "Remote switched to SSH"
 
 # ============================================================================
 # Step 11: Host-specific post-install
 # ============================================================================
 
 echo ""
-if [[ "$HOSTNAME" == "personal-mbp" ]]; then
-  info "Running personal machine setup..."
-
-  LOL_INSTALLER=$(find /opt/homebrew/Caskroom/league-of-legends -name "Install League*" -maxdepth 2 2>/dev/null | head -1)
-  if [ -n "$LOL_INSTALLER" ]; then
-    info "Launching League of Legends installer..."
-    open "$LOL_INSTALLER"
-  fi
-
-  ok "Personal setup complete"
-fi
+ok "Host-specific setup complete"
 
 # ============================================================================
 # Done!
@@ -339,6 +266,6 @@ echo ""
 echo "  7. Verify everything:"
 echo "     rebuild                  # clean build"
 echo "     gh auth status           # GitHub authenticated"
-echo "     ssh -T git@github.com   # SSH working"
+echo "     ssh -T git@github-personal   # SSH working"
 echo "     fastfetch                # system info"
 echo ""

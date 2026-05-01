@@ -26,16 +26,16 @@
 
   system.primaryUser = user;
 
-  # Secrets disabled - set up agenix later if needed
-  # age.secrets.github-token = {
-  #   file = ../secrets/github-token.age;
-  #   owner = user;
-  # };
+  # Agenix secrets are encrypted in ./secrets/*.age and safe to commit.
+  # Decryption at activation uses the host SSH key, so rebuilds do not depend on
+  # 1Password being available before the system is built.
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  # age.secrets.env-secrets = {
-  #   file = ../secrets/env-secrets.age;
-  #   owner = user;
-  # };
+  age.secrets.env-secrets = {
+    file = ../secrets/env-secrets.age;
+    owner = user;
+    mode = "0400";
+  };
 
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;

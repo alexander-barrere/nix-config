@@ -16,6 +16,7 @@
     ./fastfetch.nix
     ./claude-code.nix
     ./gh.nix
+    ./hermes.nix
   ];
 
   home.stateVersion = "24.05";

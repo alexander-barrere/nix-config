@@ -35,79 +35,101 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent/98f5be13fadbc6236362f3578923885222fcc59c";
+    };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager,
-              nix-homebrew, homebrew-core, homebrew-cask,
-              agenix, fenix, ... }:
-  let
-    user = "thor";
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nix-darwin,
+      home-manager,
+      nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
+      agenix,
+      fenix,
+      hermes-agent,
+      ...
+    }:
+    let
+      user = "thor";
 
-    mkDarwinSystem = { hostname, system ? "aarch64-darwin", extraModules ? [] }:
-      nix-darwin.lib.darwinSystem {
-        inherit system;
-        specialArgs = { inherit hostname user; };
-        modules = [
-          ./hosts/common.nix
-          ./hosts/${hostname}.nix
+      mkDarwinSystem =
+        {
+          hostname,
+          system ? "aarch64-darwin",
+          extraModules ? [ ],
+        }:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit hostname user; };
+          modules = [
+            ./hosts/common.nix
+            ./hosts/${hostname}.nix
 
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${user} = {
-              imports = [ ./home/common.nix ];
-              home.homeDirectory = "/Users/${user}";
-            };
-            home-manager.extraSpecialArgs = {
-              inherit hostname user;
-              fenixPkgs = fenix.packages.${system};
-              agenixPkgs = agenix.packages.${system};
-            };
-          }
-
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
-              user = user;
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${user} = {
+                imports = [ ./home/common.nix ];
+                home.homeDirectory = "/Users/${user}";
               };
-              mutableTaps = false;
-            };
-          }
+              home-manager.extraSpecialArgs = {
+                inherit hostname user;
+                fenixPkgs = fenix.packages.${system};
+                agenixPkgs = agenix.packages.${system};
+                hermesAgentPackage = hermes-agent.packages.${system}.default;
+              };
+            }
 
-          agenix.darwinModules.default
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = true;
+                user = user;
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                };
+                mutableTaps = false;
+              };
+            }
 
-          {
-            nixpkgs.overlays = [ (import ./overlays/default.nix) ];
-          }
-        ] ++ extraModules;
+            agenix.darwinModules.default
+
+            {
+              nixpkgs.overlays = [ (import ./overlays/default.nix) ];
+            }
+          ]
+          ++ extraModules;
+        };
+    in
+    {
+      darwinConfigurations = {
+        tanngrisnir = mkDarwinSystem { hostname = "tanngrisnir"; };
+
+        # Uncomment when you set up your work machine
+        # work-mbp = mkDarwinSystem { hostname = "work-mbp"; };
       };
-  in
-  {
-    darwinConfigurations = {
-      tanngrisnir = mkDarwinSystem { hostname = "tanngrisnir"; };
-
-      # Uncomment when you set up your work machine
-      # work-mbp = mkDarwinSystem { hostname = "work-mbp"; };
+      templates = {
+        python = {
+          path = ./templates/python;
+          description = "Python project with uv/ruff/ty";
+        };
+        rust = {
+          path = ./templates/rust;
+          description = "Rust project with fenix toolchain";
+        };
+        terraform = {
+          path = ./templates/terraform;
+          description = "Terraform project";
+        };
+      };
     };
-    templates = {
-      python = {
-        path = ./templates/python;
-        description = "Python project with uv/ruff/ty";
-      };
-      rust = {
-        path = ./templates/rust;
-        description = "Rust project with fenix toolchain";
-      };
-      terraform = {
-        path = ./templates/terraform;
-        description = "Terraform project";
-      };
-    };
-  };
 }

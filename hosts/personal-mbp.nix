@@ -13,8 +13,8 @@
 
     # Personal Productivity
     "notion"
-    "todoist"
-    "magnet"                 # Window snapping
+    "todoist-app"
+    "rectangle"
 
     # Optional: Gaming (uncomment if wanted)
     # "steam"

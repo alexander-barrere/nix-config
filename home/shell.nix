@@ -46,6 +46,27 @@
         # Vi mode
         bindkey -v
 
+        # Terminal/Home-End portability. On macOS, Fn+Left/Fn+Right are Home/End,
+        # but different terminal emulators send different escape sequences. Bind
+        # the common variants so they move to beginning/end of the command line
+        # instead of inserting literal escape text.
+        bindkey '^[[H' beginning-of-line
+        bindkey '^[OH' beginning-of-line
+        bindkey '^[[1~' beginning-of-line
+        bindkey '^[[F' end-of-line
+        bindkey '^[OF' end-of-line
+        bindkey '^[[4~' end-of-line
+
+        # Prefix-aware history search: type `curl`, then Up/Down cycles through
+        # history entries beginning with `curl` instead of all history entries.
+        autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+        zle -N up-line-or-beginning-search
+        zle -N down-line-or-beginning-search
+        bindkey '^[[A' up-line-or-beginning-search
+        bindkey '^[OA' up-line-or-beginning-search
+        bindkey '^[[B' down-line-or-beginning-search
+        bindkey '^[OB' down-line-or-beginning-search
+
         # Alt+Left/Right to jump words
         bindkey '\eb' backward-word
         bindkey '\ef' forward-word
@@ -53,7 +74,7 @@
         # Alt+Backspace to delete word segment
         bindkey '\e^?' backward-kill-word
 
-        # Better history search
+        # Better full-text history search
         bindkey '^R' history-incremental-search-backward
 
         # Custom functions

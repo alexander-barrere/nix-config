@@ -28,7 +28,7 @@ in
       push.autoSetupRemote = true;
       pull.rebase = true;
       rerere.enabled = true;
-      core.editor = "nvim";
+      core.editor = "vim";
     };
 
     ignores = [

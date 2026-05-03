@@ -89,7 +89,8 @@
         }
 
         # Editor
-        export EDITOR="nvim"
+        export EDITOR="vim"
+        export VISUAL="vim"
 
         # Source secrets if they exist
         if [ -f /run/agenix/env-secrets ]; then

@@ -36,6 +36,44 @@
     '';
   };
 
+  # Local ComfyUI helpers. ComfyUI itself and model weights live outside the Nix
+  # store under ~/AI because they are large, mutable, and updated frequently.
+  home.file.".local/bin/comfyui-start" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      exec "$HOME/AI/comfy-tools/comfyui-start" "$@"
+    '';
+  };
+
+  home.file.".local/bin/comfyui-run-workflow" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      exec "$HOME/AI/comfy-tools/run_workflow.py" "$@"
+    '';
+  };
+
+  home.file.".local/bin/comfyui-generate" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      exec "$HOME/AI/comfy-tools/generate_from_request.py" "$@"
+    '';
+  };
+
+  home.file.".local/bin/comfyui-stats" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      curl -s http://127.0.0.1:8188/system_stats | python3 -m json.tool
+    '';
+  };
+
   # Python project scaffolding
   home.file.".local/bin/mkpy" = {
     executable = true;

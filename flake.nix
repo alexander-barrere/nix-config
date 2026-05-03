@@ -37,7 +37,7 @@
     };
 
     hermes-agent = {
-      url = "github:NousResearch/hermes-agent/98f5be13fadbc6236362f3578923885222fcc59c";
+      url = "github:alexander-barrere/hermes-agent/915a17e4e7d381750d37d0ff37a3faa2f295c7f5";
     };
   };
 

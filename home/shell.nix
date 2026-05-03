@@ -3,7 +3,13 @@
 {
   programs.zsh = {
     enable = true;
-    autosuggestion.enable = true;
+    autosuggestion = {
+      enable = true;
+      # Keep inline zsh-autosuggestions visually distinct from accepted input.
+      # Ghostty themes can render the default fg=8 too bright, so use a darker
+      # 256-color gray for the suggested suffix.
+      highlight = "fg=242";
+    };
     syntaxHighlighting.enable = true;
 
     history = {

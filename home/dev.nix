@@ -22,6 +22,11 @@ in
     ruff
     ty
 
+    # Local AI / media workflow support
+    git-lfs
+    aria2
+    ffmpeg
+
     # Nix development
     nil
     nixfmt

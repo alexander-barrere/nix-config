@@ -92,6 +92,9 @@
         export EDITOR="vim"
         export VISUAL="vim"
 
+        # Rancher Desktop — container runtime CLI tools
+        export PATH="$HOME/.rd/bin:$PATH"
+
         # Source secrets if they exist
         if [ -f /run/agenix/env-secrets ]; then
           source /run/agenix/env-secrets
@@ -103,6 +106,7 @@
       LANG = "en_US.UTF-8";
       LESS = "-R";
       WORDCHARS = "";
+      DOCKER_HOST = "unix://$HOME/.rd/docker.sock";
     };
   };
 

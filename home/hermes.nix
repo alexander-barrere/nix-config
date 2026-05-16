@@ -7,6 +7,7 @@ let
   managedPath = builtins.concatStringsSep ":" [
     "${hermesAgentPackage}/bin"
     "${homeDir}/.local/bin"
+    "${homeDir}/.rd/bin"
     "/etc/profiles/per-user/${user}/bin"
     "/run/current-system/sw/bin"
     "/nix/var/nix/profiles/default/bin"
@@ -63,6 +64,36 @@ in
       };
       StandardOutPath = "${hermesHome}/logs/gateway.log";
       StandardErrorPath = "${hermesHome}/logs/gateway.error.log";
+    };
+  };
+
+  # Hermes Dashboard API — managed as a launchd agent so it survives
+  # darwin-rebuild switch. The dashboard serves the Workspace's analytics
+  # and session data on :9119.
+  launchd.agents."ai.hermes.dashboard" = {
+    enable = true;
+    config = {
+      Label = "ai.hermes.dashboard";
+      ProgramArguments = [
+        hermesBin
+        "dashboard"
+        "--host"
+        "127.0.0.1"
+        "--port"
+        "9119"
+        "--no-open"
+      ];
+      WorkingDirectory = homeDir;
+      EnvironmentVariables = {
+        HERMES_HOME = hermesHome;
+        PATH = managedPath;
+      };
+      RunAtLoad = true;
+      KeepAlive = {
+        SuccessfulExit = false;
+      };
+      StandardOutPath = "${hermesHome}/logs/dashboard.log";
+      StandardErrorPath = "${hermesHome}/logs/dashboard.error.log";
     };
   };
 }

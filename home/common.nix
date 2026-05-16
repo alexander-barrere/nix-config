@@ -44,7 +44,7 @@
       agenixPkgs.default
     ];
 
-  home.sessionPath = [ "$HOME/.local/bin" ];
+  home.sessionPath = [ "$HOME/.local/bin" "$HOME/.rd/bin" ];
 
   # Keep login-shell startup declarative and intentionally minimal.
   # Do not run `brew shellenv` here: nix-homebrew exposes brew through managed

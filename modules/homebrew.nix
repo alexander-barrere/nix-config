@@ -27,12 +27,18 @@
       "raycast" # Spotlight alternative
       "arc" # Browser
       "cleanmymac" # System maintenance
-
+      "obs"
+      "orcaslicer"
       # Development
       "cursor" # AI code editor
       "codex"
       "aionui"
       "ollama-app" # Local AI
+      "godot" # Game engine
+      "rancher" # Container runtime (open source, no Docker T&S)
+      "google-chrome" # Browser automation (Hermes, Playwright, Puppeteer)
+      # Fun
+      "battle-net"
     ];
 
     # CLI tools from Homebrew (only if not in nixpkgs)

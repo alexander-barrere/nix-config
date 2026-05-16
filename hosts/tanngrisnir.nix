@@ -17,5 +17,6 @@
 
     # Optional: Gaming (uncomment if wanted)
     "steam"
+    "battle-net"
   ];
 }

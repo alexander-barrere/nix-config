@@ -22,6 +22,10 @@ in
     ruff
     ty
 
+    # JavaScript / TypeScript
+    nodejs_22
+    bun
+
     # Local AI / media workflow support
     git-lfs
     aria2
